@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0F6E56">
+<title>Inscription — Mbamois de Yaoundé</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green:  #0F6E56;
+  --leaf:   #1D9E75;
+  --pale:   #E1F5EE;
+  --ochre:  #BA7517;
+  --cream:  #FDFAF5;
+  --ink:    #1C1C1A;
+  --muted:  #6B6B65;
+  --border: #D8D2C4;
+  --red:    #C0392B;
+  --white:  #FFFFFF;
+}
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+  padding-bottom: 60px;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+}
+
+/* ── Banner admin ── */
+.setup-banner { background:#FFF3CD; border-bottom:2px solid #f0ad4e; padding:12px 20px; font-size:13px; color:#856404; text-align:center; line-height:1.5; }
+.setup-banner strong { color:#533F03; }
+.setup-banner.hidden { display:none; }
+
+/* ── Hero ── */
+.hero { background:var(--green); padding:48px 24px 56px; text-align:center; color:#fff; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; top:0; right:0; bottom:0; left:0; background:radial-gradient(circle at 15% 50%, rgba(29,158,117,.35) 0%, transparent 55%), radial-gradient(circle at 85% 30%, rgba(186,117,23,.2) 0%, transparent 50%); }
+.hero-badge { display:inline-block; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25); border-radius:20px; padding:5px 14px; font-size:12px; letter-spacing:.8px; text-transform:uppercase; margin-bottom:16px; position:relative; }
+.hero h1 { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; line-height:1.2; margin-bottom:10px; position:relative; }
+.hero p { font-size:15px; opacity:.8; max-width:480px; margin:0 auto; line-height:1.6; position:relative; }
+.leaf-d { position:absolute; opacity:.07; font-size:120px; pointer-events:none; }
+.leaf-d.l1 { top:-20px; right:-10px; }
+.leaf-d.l2 { bottom:-30px; left:-15px; font-size:90px; }
+
+/* ── Progress ── */
+.prog-wrap { background:#fff; border-bottom:1px solid var(--border); padding:14px 24px 0; position:-webkit-sticky; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.06); }
+.prog-row { display:-webkit-flex; display:flex; -webkit-justify-content:space-between; justify-content:space-between; max-width:560px; margin:0 auto; }
+.pdot { -webkit-flex:1; flex:1; display:-webkit-flex; display:flex; -webkit-flex-direction:column; flex-direction:column; -webkit-align-items:center; align-items:center; padding-bottom:12px; border-bottom:3px solid transparent; }
+.pdot.done { border-color:var(--leaf); }
+.pdot.active { border-color:var(--ochre); }
+.pnum { width:28px; height:28px; border-radius:50%; display:-webkit-flex; display:flex; -webkit-align-items:center; align-items:center; -webkit-justify-content:center; justify-content:center; font-size:12px; font-weight:500; background:var(--border); color:var(--muted); margin-bottom:5px; }
+.pdot.done .pnum { background:var(--leaf); color:#fff; }
+.pdot.active .pnum { background:var(--ochre); color:#fff; }
+.plabel { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); font-weight:500; display:none; }
+@media(min-width:480px){ .plabel { display:block; } }
+.pdot.active .plabel { color:var(--ochre); }
+.pdot.done .plabel { color:var(--leaf); }
+
+/* ── Layout ── */
+.container { max-width:600px; margin:0 auto; padding:28px 16px 0; }
+.step { display:none; }
+.step.on { display:block; }
+
+/* ── Card ── */
+.card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:18px; margin-bottom:14px; box-shadow:0 4px 24px rgba(15,110,86,.10); }
+.sec-head { display:-webkit-flex; display:flex; -webkit-align-items:center; align-items:center; margin-bottom:20px; }
+.sec-icon { width:40px; height:40px; background:var(--pale); border-radius:10px; display:-webkit-flex; display:flex; -webkit-align-items:center; align-items:center; -webkit-justify-content:center; justify-content:center; font-size:20px; margin-right:12px; -webkit-flex-shrink:0; flex-shrink:0; }
+.sec-head h2 { font-family:'Playfair Display',serif; font-size:19px; color:var(--green); }
+.sec-head p { font-size:13px; color:var(--muted); margin-top:2px; }
+
+/* ── Fields ── */
+.field { margin-bottom:16px; }
+.field:last-child { margin-bottom:0; }
+.field label.fl { font-size:13px; font-weight:500; color:var(--ink); display:block; margin-bottom:6px; }
+.req { color:var(--ochre); }
+.hint { font-size:12px; color:var(--muted); margin-top:4px; }
+.err { font-size:12px; color:var(--red); margin-top:4px; display:none; }
+.err.on { display:block; }
+.two-col { display:-webkit-flex; display:flex; }
+.two-col .field { -webkit-flex:1; flex:1; }
+.two-col .field:first-child { margin-right:14px; }
+@media(max-width:480px){ .two-col { display:block; } .two-col .field:first-child { margin-right:0; } }
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="date"],
+select,
+textarea {
+  width:100%;
+  padding:12px 14px;
+  border:1.5px solid var(--border);
+  border-radius:8px;
+  font-family:'DM Sans',sans-serif;
+  font-size:16px;
+  color:var(--ink);
+  background:#fff;
+  outline:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  appearance:none;
+}
+input:focus, select:focus, textarea:focus { border-color:var(--leaf); }
+input.err-inp, select.err-inp { border-color:var(--red); }
+textarea { resize:vertical; min-height:80px; }
+select {
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6B65' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  padding-right:36px;
+}
+
+/* ── Range ── */
+.range-wrap { display:-webkit-flex; display:flex; -webkit-align-items:center; align-items:center; }
+input[type="range"] { -webkit-flex:1; flex:1; -webkit-appearance:none; height:5px; background:var(--border); border-radius:5px; outline:none; margin-right:12px; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:var(--leaf); }
+.range-val { font-size:14px; font-weight:500; color:var(--green); min-width:24px; text-align:right; }
+
+/* ── Divider ── */
+.divider { display:-webkit-flex; display:flex; -webkit-align-items:center; align-items:center; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin:18px 0 4px; }
+.divider::before, .divider::after { content:''; -webkit-flex:1; flex:1; height:1px; background:var(--border); margin:0 10px; }
+
+/* ── PILLS — JS-driven, pas de label/input natif ── */
+.pills { display:-webkit-flex; display:flex; -webkit-flex-wrap:wrap; flex-wrap:wrap; margin-top:6px; }
+.pill {
+  display:inline-block;
+  padding:10px 16px;
+  border-radius:20px;
+  border:1.5px solid var(--border);
+  font-size:14px;
+  font-weight:400;
+  color:var(--ink);
+  background:#fff;
+  margin:0 6px 6px 0;
+  cursor:pointer;
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+.pill.sel { background:var(--leaf); border-color:var(--leaf); color:#fff; font-weight:500; }
+.pill.sel.ochre { background:var(--ochre); border-color:var(--ochre); }
+
+/* ── CHECK CARDS ── */
+.checks { display:-webkit-flex; display:flex; -webkit-flex-wrap:wrap; flex-wrap:wrap; margin:-4px; }
+.chk {
+  width:50%;
+  padding:4px;
+}
+@media(min-width:400px){ .chk { width:33.333%; } }
+.chk-btn {
+  display:-webkit-flex; display:flex;
+  -webkit-flex-direction:column; flex-direction:column;
+  -webkit-align-items:center; align-items:center;
+  padding:14px 8px;
+  border:1.5px solid var(--border);
+  border-radius:10px;
+  cursor:pointer;
+  text-align:center;
+  font-size:13px;
+  color:var(--ink);
+  background:#fff;
+  width:100%;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  -webkit-user-select:none;
+  user-select:none;
+}
+.chk-btn .ico { font-size:22px; margin-bottom:6px; display:block; }
+.chk-btn.sel { border-color:var(--leaf); background:var(--pale); color:var(--green); font-weight:500; }
+
+/* ── Photo upload ── */
+.photo-zone {
+  display:-webkit-flex; display:flex;
+  -webkit-flex-direction:column; flex-direction:column;
+  -webkit-align-items:center; align-items:center;
+  border:2px dashed var(--border);
+  border-radius:10px;
+  padding:24px;
+  cursor:pointer;
+  background:var(--cream);
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  width:100%;
+}
+.photo-zone input[type="file"] { display:none; }
+#photo-preview { width:80px; height:80px; border-radius:50%; object-fit:cover; display:none; border:3px solid var(--leaf); margin-bottom:8px; }
+.photo-txt { font-size:13px; color:var(--muted); text-align:center; }
+#photo-status { font-size:12px; margin-top:8px; text-align:center; }
+
+/* ── DOB ── */
+.dob-wrap { display:-webkit-flex; display:flex; -webkit-flex-direction:column; flex-direction:column; }
+.dob-or { display:-webkit-flex; display:flex; -webkit-align-items:center; align-items:center; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin:8px 0; }
+.dob-or::before, .dob-or::after { content:''; -webkit-flex:1; flex:1; height:1px; background:var(--border); margin:0 8px; }
+
+/* ── Navigation ── */
+.nav { display:-webkit-flex; display:flex; -webkit-justify-content:space-between; justify-content:space-between; -webkit-align-items:center; align-items:center; margin-top:24px; margin-bottom:36px; }
+.btn {
+  min-height:50px;
+  padding:13px 22px;
+  border-radius:8px;
+  font-family:'DM Sans',sans-serif;
+  font-size:15px;
+  font-weight:500;
+  cursor:pointer;
+  border:none;
+  -webkit-appearance:none;
+  appearance:none;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  display:inline-block;
+  text-align:center;
+}
+.btn-back { background:transparent; border:1.5px solid var(--border); color:var(--muted); min-width:90px; }
+.btn-next { background:var(--leaf); color:#fff; -webkit-flex:1; flex:1; margin-left:12px; max-width:260px; }
+.btn-send { background:var(--ochre); color:#fff; -webkit-flex:1; flex:1; margin-left:12px; max-width:260px; }
+.btn:disabled { background:var(--muted); cursor:not-allowed; }
+.step-ctr { font-size:13px; color:var(--muted); white-space:nowrap; }
+@media(max-width:360px){ .step-ctr { display:none; } .btn { padding:12px 14px; font-size:14px; } }
+
+/* ── Sending overlay ── */
+.overlay { display:none; position:fixed; top:0; right:0; bottom:0; left:0; background:rgba(15,110,86,.93); z-index:999; -webkit-flex-direction:column; flex-direction:column; -webkit-align-items:center; align-items:center; -webkit-justify-content:center; justify-content:center; color:#fff; }
+.overlay.on { display:-webkit-flex; display:flex; }
+.spinner { width:48px; height:48px; border:4px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; -webkit-animation:spin .8s linear infinite; animation:spin .8s linear infinite; margin-bottom:16px; }
+@-webkit-keyframes spin { to { -webkit-transform:rotate(360deg); } }
+@keyframes spin { to { transform:rotate(360deg); } }
+.overlay p { font-size:16px; font-weight:500; text-align:center; padding:0 24px; }
+
+/* ── Success ── */
+.success { display:none; text-align:center; padding:40px 20px; }
+.success.on { display:block; }
+.sico { width:80px; height:80px; background:var(--pale); border-radius:50%; display:-webkit-flex; display:flex; -webkit-align-items:center; align-items:center; -webkit-justify-content:center; justify-content:center; font-size:36px; margin:0 auto 20px; }
+.success h2 { font-family:'Playfair Display',serif; font-size:26px; color:var(--green); margin-bottom:10px; }
+.success > p { color:var(--muted); line-height:1.6; max-width:380px; margin:0 auto 24px; }
+.recap { background:#fff; border:1px solid var(--border); border-radius:12px; padding:18px; text-align:left; max-width:480px; margin:0 auto 24px; }
+.recap h3 { font-size:12px; text-transform:uppercase; letter-spacing:.6px; color:var(--ochre); margin-bottom:12px; font-weight:600; }
+.recap-row { display:-webkit-flex; display:flex; -webkit-justify-content:space-between; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); font-size:14px; }
+.recap-row:last-child { border-bottom:none; }
+.recap-row span:first-child { color:var(--muted); }
+.recap-row span:last-child { font-weight:500; text-align:right; }
+.wa-btn { display:-webkit-inline-flex; display:inline-flex; -webkit-align-items:center; align-items:center; background:#25D366; color:#fff; padding:14px 24px; border-radius:8px; font-size:15px; font-weight:500; text-decoration:none; -webkit-tap-highlight-color:transparent; }
+.wa-btn svg { margin-right:10px; }
+@media(max-width:480px){ .wa-btn { width:100%; -webkit-justify-content:center; justify-content:center; } }
+
+.err-notice { display:none; background:#FFF0EE; border:1px solid #F5C6C0; border-radius:8px; padding:12px 16px; font-size:13px; color:var(--red); margin-top:14px; text-align:center; }
+.err-notice.on { display:block; }
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"><div class="spinner"></div><p id="overlay-msg">Envoi en cours...</p></div>
+
+<div class="setup-banner" id="setup-banner"><strong>Admin :</strong> Remplacez <code>VOTRE_URL_APPS_SCRIPT</code> dans le script.</div>
+
+<div class="hero">
+  <div class="leaf-d l1">🌿</div>
+  <div class="leaf-d l2">🏔️</div>
+  <div class="hero-badge">Mbamois de Yaoundé</div>
+  <h1>Fiche d'Inscription<br>au Groupe Communautaire</h1>
+  <p>Rejoignez officiellement la famille Mbam de Yaoundé.</p>
+</div>
+
+<div class="prog-wrap">
+  <div class="prog-row">
+    <div class="pdot active" id="d1"><div class="pnum" id="n1">1</div><div class="plabel">Identité</div></div>
+    <div class="pdot" id="d2"><div class="pnum" id="n2">2</div><div class="plabel">Contact</div></div>
+    <div class="pdot" id="d3"><div class="pnum" id="n3">3</div><div class="plabel">Origines</div></div>
+    <div class="pdot" id="d4"><div class="pnum" id="n4">4</div><div class="plabel">Vie & Pro</div></div>
+    <div class="pdot" id="d5"><div class="pnum" id="n5">5</div><div class="plabel">Intérêts</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ═══ ÉTAPE 1 ═══ -->
+<div class="step on" id="step-1">
+  <div class="sec-head"><div class="sec-icon">👤</div><div><h2>Identité personnelle</h2><p>Vos informations de base</p></div></div>
+
+  <div class="card">
+    <div class="field">
+      <label class="fl">Photo de profil <span style="color:var(--muted);font-weight:400">(facultatif)</span></label>
+      <div class="photo-zone" onclick="document.getElementById('photo-input').click()">
+        <img id="photo-preview" alt="Photo">
+        <div id="photo-icon" style="font-size:28px;margin-bottom:8px;">📷</div>
+        <p class="photo-txt">Appuyez pour ajouter une photo<br><span style="font-size:11px">JPG, PNG, HEIC — max 15 Mo</span></p>
+        <input type="file" id="photo-input" accept="image/*,image/heic,image/heif" onchange="onPhoto(this)">
+      </div>
+      <p id="photo-status"></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="two-col">
+      <div class="field">
+        <label class="fl">Nom <span class="req">*</span></label>
+        <input type="text" id="nom" placeholder="Ex : Njoya" autocomplete="family-name">
+        <div class="err" id="e-nom">Veuillez entrer votre nom</div>
+      </div>
+      <div class="field">
+        <label class="fl">Prénom(s) <span class="req">*</span></label>
+        <input type="text" id="prenom" placeholder="Ex : Pascal" autocomplete="given-name">
+        <div class="err" id="e-prenom">Veuillez entrer votre prénom</div>
+      </div>
+    </div>
+
+    <div class="divider">Informations personnelles</div>
+
+    <div class="field">
+      <label class="fl">Genre</label>
+      <div class="pills" id="genre-pills">
+        <div class="pill" data-g="Homme" onclick="selPill('genre-pills',this,'single')">Homme</div>
+        <div class="pill" data-g="Femme" onclick="selPill('genre-pills',this,'single')">Femme</div>
+        <div class="pill" data-g="Non précisé" onclick="selPill('genre-pills',this,'single')">Non précisé</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="fl">Date de naissance <span style="color:var(--muted);font-weight:400">(facultatif)</span></label>
+      <div class="dob-wrap">
+        <input type="date" id="dob" max="2007-01-01">
+        <div class="dob-or">ou saisissez</div>
+        <input type="text" id="dob-text" placeholder="Ex : 15/03/1990">
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="field">
+        <label class="fl">Tranche d'âge <span class="req">*</span></label>
+        <select id="age-tranche">
+          <option value="">—</option>
+          <option>18 – 25 ans</option>
+          <option>26 – 35 ans</option>
+          <option>36 – 45 ans</option>
+          <option>46 – 55 ans</option>
+          <option>56 ans et plus</option>
+        </select>
+        <div class="err" id="e-age">Sélectionnez une tranche</div>
+      </div>
+      <div class="field">
+        <label class="fl">Situation matrimoniale</label>
+        <select id="matrimoniale">
+          <option value="">— Sélectionnez —</option>
+          <option>Célibataire</option><option>Marié(e)</option>
+          <option>En couple</option><option>Divorcé(e)</option><option>Veuf/Veuve</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <span class="step-ctr">Étape 1 sur 5</span>
+    <button type="button" class="btn btn-next" onclick="goNext(1)">Continuer →</button>
+  </div>
+</div>
+
+<!-- ═══ ÉTAPE 2 ═══ -->
+<div class="step" id="step-2">
+  <div class="sec-head"><div class="sec-icon">📱</div><div><h2>Contact & Localisation</h2><p>Pour les rencontres à Yaoundé</p></div></div>
+
+  <div class="card">
+    <div class="field">
+      <label class="fl">Numéro WhatsApp <span class="req">*</span></label>
+      <input type="tel" id="telephone" placeholder="Ex : 6XX XXX XXX" autocomplete="tel">
+      <div class="hint">Votre numéro actif dans le groupe</div>
+      <div class="err" id="e-tel">Veuillez entrer un numéro</div>
+    </div>
+    <div class="field">
+      <label class="fl">Deuxième numéro <span style="color:var(--muted);font-weight:400">(facultatif)</span></label>
+      <input type="tel" id="tel2" placeholder="Ex : 2XX XXX XXX">
+    </div>
+    <div class="field">
+      <label class="fl">Email <span style="color:var(--muted);font-weight:400">(facultatif)</span></label>
+      <input type="email" id="email" placeholder="Ex : pascal@mail.com" autocomplete="email">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label class="fl">Quartier de résidence <span class="req">*</span></label>
+      <input type="text" id="quartier" placeholder="Ex : Bastos, Essos, Biyem-Assi...">
+      <div class="err" id="e-quartier">Veuillez indiquer votre quartier</div>
+    </div>
+    <div class="field">
+      <label class="fl">Arrondissement</label>
+      <select id="arrondissement">
+        <option value="">— Sélectionnez —</option>
+        <option>Yaoundé 1er</option><option>Yaoundé 2e</option><option>Yaoundé 3e</option>
+        <option>Yaoundé 4e</option><option>Yaoundé 5e</option><option>Yaoundé 6e</option><option>Yaoundé 7e</option>
+      </select>
+    </div>
+    <div class="field">
+      <label class="fl">Possédez-vous un véhicule ?</label>
+      <div class="pills" id="vehicule-pills">
+        <div class="pill" data-g="Oui" onclick="selPill('vehicule-pills',this,'single');showPlaces(this)">🚗 Oui</div>
+        <div class="pill" data-g="Non" onclick="selPill('vehicule-pills',this,'single');hidePlaces()">Non</div>
+        <div class="pill" data-g="Moto" onclick="selPill('vehicule-pills',this,'single');hidePlaces()">🏍️ Moto</div>
+      </div>
+    </div>
+    <div class="field" id="places-field" style="display:none">
+      <label class="fl">Places pour covoiturage</label>
+      <div class="range-wrap">
+        <input type="range" id="places-range" min="1" max="6" value="2" oninput="document.getElementById('places-val').textContent=this.value">
+        <span class="range-val" id="places-val">2</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button type="button" class="btn btn-back" onclick="goBack(2)">← Retour</button>
+    <span class="step-ctr">Étape 2 sur 5</span>
+    <button type="button" class="btn btn-next" onclick="goNext(2)">Continuer →</button>
+  </div>
+</div>
+
+<!-- ═══ ÉTAPE 3 ═══ -->
+<div class="step" id="step-3">
+  <div class="sec-head"><div class="sec-icon">🌿</div><div><h2>Origines Mbam</h2><p>Vos racines, votre terroir</p></div></div>
+
+  <div class="card">
+    <div class="field">
+      <label class="fl">Village / Localité d'origine <span class="req">*</span></label>
+      <input type="text" id="village" placeholder="Ex : Bafia, Ntui, Ngoro, Bokito...">
+      <div class="err" id="e-village">Veuillez indiquer votre village</div>
+    </div>
+    <div class="field">
+      <label class="fl">Département d'origine <span class="req">*</span></label>
+      <select id="departement">
+        <option value="">— Sélectionnez —</option>
+        <optgroup label="Coeur du Mbam"><option>Mbam-et-Inoubou (Bafia)</option><option>Mbam-et-Kim (Ntui)</option></optgroup>
+        <optgroup label="Limitrophes"><option>Haute-Sanaga (Nanga-Eboko)</option><option>Lékié (Monatélé)</option></optgroup>
+        <option>Autre / Hors région</option>
+      </select>
+      <div class="err" id="e-dep">Veuillez sélectionner un département</div>
+    </div>
+    <div class="field">
+      <label class="fl">Sous-groupe ethnique</label>
+      <select id="ethnique">
+        <option value="">— Optionnel —</option>
+        <optgroup label="Bantous du Mbam">
+          <option>Bafia (Bekpak / Rikpa)</option><option>Yambassa</option><option>Banen</option>
+          <option>Nyokon</option><option>Yambetta</option><option>Lémandé</option><option>Balom</option>
+        </optgroup>
+        <optgroup label="Autres peuples"><option>Tikar</option><option>Bati-Ossananga</option><option>Babouté</option></optgroup>
+        <option>Autre / Mixte</option>
+      </select>
+    </div>
+    <div class="field">
+      <label class="fl">Langue Mbam pratiquée</label>
+      <div class="pills" id="langue-pills">
+        <div class="pill" data-g="Bafia" onclick="selPill('langue-pills',this,'multi')">Bafia</div>
+        <div class="pill" data-g="Yambassa" onclick="selPill('langue-pills',this,'multi')">Yambassa</div>
+        <div class="pill" data-g="Banen" onclick="selPill('langue-pills',this,'multi')">Banen</div>
+        <div class="pill" data-g="Yambetta" onclick="selPill('langue-pills',this,'multi')">Yambetta</div>
+        <div class="pill" data-g="Lémandé" onclick="selPill('langue-pills',this,'multi')">Lémandé</div>
+        <div class="pill" data-g="Autre" onclick="selPill('langue-pills',this,'multi')">Autre</div>
+        <div class="pill" data-g="Aucune" onclick="selPill('langue-pills',this,'multi')">Pas encore</div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="fl">Niveau de pratique</label>
+      <div class="pills" id="nlangue-pills">
+        <div class="pill ochre" data-g="Débutant" onclick="selPill('nlangue-pills',this,'single')">Débutant</div>
+        <div class="pill ochre" data-g="Intermédiaire" onclick="selPill('nlangue-pills',this,'single')">Intermédiaire</div>
+        <div class="pill ochre" data-g="Courant" onclick="selPill('nlangue-pills',this,'single')">Courant</div>
+        <div class="pill ochre" data-g="Natif" onclick="selPill('nlangue-pills',this,'single')">Natif</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label class="fl">Depuis combien de temps à Yaoundé ?</label>
+      <select id="duree-yaounde">
+        <option value="">— Sélectionnez —</option>
+        <option>Moins d'1 an</option><option>1 à 3 ans</option><option>3 à 5 ans</option>
+        <option>5 à 10 ans</option><option>Plus de 10 ans</option><option>Né(e) à Yaoundé</option>
+      </select>
+    </div>
+    <div class="field">
+      <label class="fl">Fréquence de visite au village</label>
+      <div class="pills" id="freq-pills">
+        <div class="pill" data-g="Plusieurs fois/an" onclick="selPill('freq-pills',this,'single')">Plusieurs fois/an</div>
+        <div class="pill" data-g="1 fois/an" onclick="selPill('freq-pills',this,'single')">1 fois/an</div>
+        <div class="pill" data-g="Rarement" onclick="selPill('freq-pills',this,'single')">Rarement</div>
+        <div class="pill" data-g="Jamais" onclick="selPill('freq-pills',this,'single')">Jamais</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button type="button" class="btn btn-back" onclick="goBack(3)">← Retour</button>
+    <span class="step-ctr">Étape 3 sur 5</span>
+    <button type="button" class="btn btn-next" onclick="goNext(3)">Continuer →</button>
+  </div>
+</div>
+
+<!-- ═══ ÉTAPE 4 ═══ -->
+<div class="step" id="step-4">
+  <div class="sec-head"><div class="sec-icon">💼</div><div><h2>Vie professionnelle</h2><p>Pour nous connaître et nous soutenir</p></div></div>
+
+  <div class="card">
+    <div class="field">
+      <label class="fl">Profession / Activité principale <span class="req">*</span></label>
+      <input type="text" id="profession" placeholder="Ex : Ingénieur, Commerçant...">
+      <div class="err" id="e-pro">Veuillez indiquer votre activité</div>
+    </div>
+    <div class="field">
+      <label class="fl">Secteur d'activité</label>
+      <select id="secteur">
+        <option value="">— Sélectionnez —</option>
+        <option>Agriculture / Agroalimentaire</option><option>BTP / Immobilier</option>
+        <option>Commerce / Distribution</option><option>Communication / Média</option>
+        <option>Éducation / Formation</option><option>Finance / Banque / Assurance</option>
+        <option>Fonction publique / Administration</option><option>Santé / Médical</option>
+        <option>IT / Numérique</option><option>Juridique / Droit</option>
+        <option>ONG / Humanitaire</option><option>Transport / Logistique</option><option>Autre</option>
+      </select>
+    </div>
+    <div class="field">
+      <label class="fl">Statut professionnel</label>
+      <div class="pills" id="statut-pills">
+        <div class="pill" data-g="Salarié" onclick="selPill('statut-pills',this,'single')">Salarié(e)</div>
+        <div class="pill" data-g="Entrepreneur" onclick="selPill('statut-pills',this,'single')">Entrepreneur</div>
+        <div class="pill" data-g="Étudiant" onclick="selPill('statut-pills',this,'single')">Étudiant(e)</div>
+        <div class="pill" data-g="Retraité" onclick="selPill('statut-pills',this,'single')">Retraité(e)</div>
+        <div class="pill" data-g="En recherche" onclick="selPill('statut-pills',this,'single')">En recherche</div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="fl">Activité secondaire ou commerce ?</label>
+      <textarea id="activite-sec" placeholder="Décrivez brièvement si oui..." style="min-height:70px"></textarea>
+      <div class="hint">Utile lors du Business Day du vendredi !</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label class="fl">Compétences à partager</label>
+      <div class="pills" id="comp-pills">
+        <div class="pill" data-g="Cuisine" onclick="selPill('comp-pills',this,'multi')">🍲 Cuisine</div>
+        <div class="pill" data-g="Musique" onclick="selPill('comp-pills',this,'multi')">🎵 Musique</div>
+        <div class="pill" data-g="Sport" onclick="selPill('comp-pills',this,'multi')">🏃 Sport</div>
+        <div class="pill" data-g="Santé" onclick="selPill('comp-pills',this,'multi')">🩺 Santé</div>
+        <div class="pill" data-g="Droit" onclick="selPill('comp-pills',this,'multi')">⚖️ Droit</div>
+        <div class="pill" data-g="Finance" onclick="selPill('comp-pills',this,'multi')">💰 Finance</div>
+        <div class="pill" data-g="Informatique" onclick="selPill('comp-pills',this,'multi')">💻 Informatique</div>
+        <div class="pill" data-g="Photo/Vidéo" onclick="selPill('comp-pills',this,'multi')">📸 Photo/Vidéo</div>
+        <div class="pill" data-g="Événementiel" onclick="selPill('comp-pills',this,'multi')">🎉 Événementiel</div>
+        <div class="pill" data-g="Culture Mbam" onclick="selPill('comp-pills',this,'multi')">🌿 Culture Mbam</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button type="button" class="btn btn-back" onclick="goBack(4)">← Retour</button>
+    <span class="step-ctr">Étape 4 sur 5</span>
+    <button type="button" class="btn btn-next" onclick="goNext(4)">Continuer →</button>
+  </div>
+</div>
+
+<!-- ═══ ÉTAPE 5 ═══ -->
+<div class="step" id="step-5">
+  <div class="sec-head"><div class="sec-icon">🏔️</div><div><h2>Intérêts & Engagement</h2><p>Vos goûts et disponibilités</p></div></div>
+
+  <div class="card">
+    <div class="field">
+      <label class="fl">Activités qui vous intéressent <span class="req">*</span></label>
+      <div class="checks" id="activite-checks">
+        <div class="chk"><div class="chk-btn" data-g="Randonnée" onclick="selChk(this)"><span class="ico">🥾</span>Randonnée</div></div>
+        <div class="chk"><div class="chk-btn" data-g="Cuisine" onclick="selChk(this)"><span class="ico">🍲</span>Cuisine & terroir</div></div>
+        <div class="chk"><div class="chk-btn" data-g="Culture" onclick="selChk(this)"><span class="ico">🌿</span>Culture Mbam</div></div>
+        <div class="chk"><div class="chk-btn" data-g="Sport" onclick="selChk(this)"><span class="ico">⚽</span>Sport collectif</div></div>
+        <div class="chk"><div class="chk-btn" data-g="Business" onclick="selChk(this)"><span class="ico">💼</span>Business & réseaux</div></div>
+        <div class="chk"><div class="chk-btn" data-g="Spirituel" onclick="selChk(this)"><span class="ico">🕊️</span>Spiritualité</div></div>
+        <div class="chk"><div class="chk-btn" data-g="Famille" onclick="selChk(this)"><span class="ico">👨‍👩‍👧</span>Famille & détente</div></div>
+        <div class="chk"><div class="chk-btn" data-g="Histoire" onclick="selChk(this)"><span class="ico">📜</span>Histoire & racines</div></div>
+        <div class="chk"><div class="chk-btn" data-g="Ambiance & fun" onclick="selChk(this)"><span class="ico">🎉</span>Ambiance & fun</div></div>
+      </div>
+      <div class="err on" id="e-activite" style="display:none">Sélectionnez au moins une activité</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label class="fl">Disponibilité pour les rencontres</label>
+      <div class="pills" id="dispo-pills">
+        <div class="pill" data-g="Weekends" onclick="selPill('dispo-pills',this,'multi')">Week-ends</div>
+        <div class="pill" data-g="Soirées" onclick="selPill('dispo-pills',this,'multi')">Soirées</div>
+        <div class="pill" data-g="En journée" onclick="selPill('dispo-pills',this,'multi')">En journée</div>
+        <div class="pill" data-g="Jours fériés" onclick="selPill('dispo-pills',this,'multi')">Jours fériés</div>
+        <div class="pill" data-g="Vacances" onclick="selPill('dispo-pills',this,'multi')">Vacances</div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="fl">Participez-vous à la rencontre de cette fin du mois ?</label>
+      <div class="pills" id="rencontre-pills">
+        <div class="pill" data-g="Oui, je suis partant(e)" onclick="selPill('rencontre-pills',this,'single')">✅ Oui !</div>
+        <div class="pill" data-g="Peut-être" onclick="selPill('rencontre-pills',this,'single')">🤔 Peut-être</div>
+        <div class="pill" data-g="Non" onclick="selPill('rencontre-pills',this,'single')">❌ Non cette fois</div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="fl">Votre motivation pour rejoindre la communauté</label>
+      <textarea id="motivation" placeholder="En quelques mots, pourquoi avez-vous rejoint ce groupe ?"></textarea>
+    </div>
+    <div class="field">
+      <label class="fl">Comment avez-vous connu ce groupe ?</label>
+      <select id="source">
+        <option value="">— Sélectionnez —</option>
+        <option>Recommandé par un ami / membre</option><option>WhatsApp / réseaux sociaux</option>
+        <option>Événement communautaire</option><option>Association Mbam</option><option>Autre</option>
+      </select>
+    </div>
+    <div class="field">
+      <label class="fl">Souhaitez-vous être animateur/animatrice ?</label>
+      <div class="pills" id="anim-pills">
+        <div class="pill ochre" data-g="Oui, volontiers" onclick="selPill('anim-pills',this,'single')">Oui !</div>
+        <div class="pill ochre" data-g="Parfois" onclick="selPill('anim-pills',this,'single')">Parfois</div>
+        <div class="pill ochre" data-g="Non" onclick="selPill('anim-pills',this,'single')">Pas pour l'instant</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="err-notice" id="err-submit">Une erreur s'est produite. Vérifiez votre connexion et réessayez.</div>
+
+  <div class="nav">
+    <button type="button" class="btn btn-back" onclick="goBack(5)">← Retour</button>
+    <span class="step-ctr">Étape 5 sur 5</span>
+    <button type="button" class="btn btn-send" id="btn-send" onclick="submit()">Envoyer ma fiche ✓</button>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- SUCCÈS -->
+<div class="success" id="success">
+  <div class="sico">🌿</div>
+  <h2>Bienvenue dans la famille !</h2>
+  <p>Votre fiche a bien été enregistrée. Vous faites désormais officiellement partie des <strong>Mbamois de Yaoundé</strong>.</p>
+  <div class="recap">
+    <h3>Récapitulatif</h3>
+    <div class="recap-row"><span>Nom complet</span><span id="r-nom">—</span></div>
+    <div class="recap-row"><span>Village d'origine</span><span id="r-village">—</span></div>
+    <div class="recap-row"><span>Quartier à Yaoundé</span><span id="r-quartier">—</span></div>
+    <div class="recap-row"><span>Activité principale</span><span id="r-pro">—</span></div>
+    <div class="recap-row"><span>Rencontre fin du mois</span><span id="r-rencontre">—</span></div>
+  </div>
+  <a class="wa-btn" href="https://wa.me/237699166684" target="_blank">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    <span><span style="display:block;font-size:15px;font-weight:600">Rejoindre le groupe WhatsApp</span><span style="display:block;font-size:12px;opacity:.85;margin-top:2px">+237 699 166 684</span></span>
+  </a>
+  <div style="margin-top:16px">
+    <button type="button" class="btn btn-back" onclick="window.print()">🖨️ Imprimer ma fiche</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbytBws4HYOTT_4mOj57-Rh5GBwCLfuWIraRLmqV7YA2ykObEiHK2O1N6mglknJR5qg/exec';
+// ═══════════════════════════════════════════════
+
+if (APPS_SCRIPT_URL !== 'VOTRE_URL_APPS_SCRIPT') {
+  document.getElementById('setup-banner').classList.add('hidden');
+}
+
+var cur = 1;
+var photoFile = null;
+
+// ── Scroll top compatible ──
+function toTop() {
+  try { window.scrollTo(0, 0); } catch(e) {}
+  try { document.body.scrollTop = 0; } catch(e) {}
+  try { document.documentElement.scrollTop = 0; } catch(e) {}
+}
+
+// ── Sélection pills — JS pur, sans label/input ──
+function selPill(groupId, el, mode) {
+  var pills = document.getElementById(groupId).querySelectorAll('.pill');
+  if (mode === 'single') {
+    for (var i = 0; i < pills.length; i++) pills[i].classList.remove('sel');
+    el.classList.add('sel');
+  } else {
+    el.classList.toggle('sel');
+  }
+}
+
+// ── Sélection check-cards ──
+function selChk(el) {
+  el.classList.toggle('sel');
+  // Cacher/montrer l'erreur activité
+  var nb = document.querySelectorAll('#activite-checks .chk-btn.sel').length;
+  var err = document.getElementById('e-activite');
+  if (err) err.style.display = nb > 0 ? 'none' : 'block';
+}
+
+// ── Valeur d'un groupe pills ──
+function getPills(groupId, mode) {
+  var pills = document.getElementById(groupId).querySelectorAll('.pill.sel');
+  var vals = [];
+  for (var i = 0; i < pills.length; i++) vals.push(pills[i].getAttribute('data-g'));
+  return mode === 'single' ? (vals[0] || '') : vals.join(', ');
+}
+
+// ── Valeur check-cards ──
+function getChks(containerId) {
+  var btns = document.querySelectorAll('#' + containerId + ' .chk-btn.sel');
+  var vals = [];
+  for (var i = 0; i < btns.length; i++) vals.push(btns[i].getAttribute('data-g'));
+  return vals.join(', ');
+}
+
+// ── Valeur champ texte ──
+function g(id) {
+  var el = document.getElementById(id);
+  return el ? (el.value || '').trim() : '';
+}
+
+// ── Véhicule ──
+function showPlaces(el) {
+  if (el.classList.contains('sel')) {
+    document.getElementById('places-field').style.display = 'block';
+  }
+}
+function hidePlaces() {
+  document.getElementById('places-field').style.display = 'none';
+}
+
+// ── Rendu étapes ──
+function renderSteps() {
+  for (var i = 1; i <= 5; i++) {
+    var s = document.getElementById('step-' + i);
+    if (s) { s.className = i === cur ? 'step on' : 'step'; }
+    var d = document.getElementById('d' + i);
+    var n = document.getElementById('n' + i);
+    if (!d || !n) continue;
+    d.className = 'pdot';
+    if (i < cur)      { d.classList.add('done');   n.textContent = '✓'; }
+    else if (i === cur){ d.classList.add('active'); n.textContent = String(i); }
+    else               { n.textContent = String(i); }
+  }
+}
+
+// ── Validation ──
+function validate(step) {
+  var ok = true;
+  function req(id, errId) {
+    var el = document.getElementById(id);
+    var e  = document.getElementById(errId);
+    var v  = el ? (el.value || '').trim() : '';
+    if (!v) {
+      if (el) el.classList.add('err-inp');
+      if (e)  e.classList.add('on');
+      ok = false;
+    } else {
+      if (el) el.classList.remove('err-inp');
+      if (e)  e.classList.remove('on');
+    }
+  }
+  if (step === 1) { req('nom','e-nom'); req('prenom','e-prenom'); req('age-tranche','e-age'); }
+  if (step === 2) { req('telephone','e-tel'); req('quartier','e-quartier'); }
+  if (step === 3) { req('village','e-village'); req('departement','e-dep'); }
+  if (step === 4) { req('profession','e-pro'); }
+  if (step === 5) {
+    var nb = document.querySelectorAll('#activite-checks .chk-btn.sel').length;
+    var e5 = document.getElementById('e-activite');
+    if (nb === 0) { if (e5) e5.style.display = 'block'; ok = false; }
+    else          { if (e5) e5.style.display = 'none'; }
+  }
+  return ok;
+}
+
+// ── Navigation ──
+function goNext(step) {
+  if (!validate(step)) {
+    // Scroller vers première erreur
+    setTimeout(function() {
+      var errs = document.querySelectorAll('.err.on, .err-inp');
+      if (errs.length > 0) {
+        try {
+          var top = errs[0].getBoundingClientRect().top + window.pageYOffset - 100;
+          window.scrollTo(0, top > 0 ? top : 0);
+        } catch(e) {}
+      }
+    }, 50);
+    return;
+  }
+  cur = step + 1;
+  renderSteps();
+  setTimeout(toTop, 30);
+}
+
+function goBack(step) {
+  cur = step - 1;
+  renderSteps();
+  setTimeout(toTop, 30);
+}
+
+// ── Photo ──
+function onPhoto(input) {
+  if (!input.files || !input.files.length) return;
+  var file = input.files[0];
+  var status = document.getElementById('photo-status');
+  if (file.size > 15 * 1024 * 1024) {
+    status.style.color = '#C0392B';
+    status.textContent = 'Photo trop lourde (max 15 Mo)';
+    photoFile = null;
+    return;
+  }
+  photoFile = file;
+  status.style.color = '#0F6E56';
+  status.textContent = 'Photo sélectionnée : ' + Math.round(file.size/1024) + ' Ko';
+  var rd = new FileReader();
+  rd.onload = function(ev) {
+    var t = new Image();
+    t.onload = function() {
+      var p = document.getElementById('photo-preview');
+      p.src = ev.target.result;
+      p.style.display = 'block';
+      var ic = document.getElementById('photo-icon');
+      if (ic) ic.style.display = 'none';
+    };
+    t.src = ev.target.result;
+  };
+  rd.readAsDataURL(file);
+}
+
+// ── Compression photo ──
+function compressPhoto(file) {
+  return new Promise(function(resolve, reject) {
+    var rd = new FileReader();
+    rd.onerror = function() { reject('read'); };
+    rd.onload = function(ev) {
+      var img = new Image();
+      img.onerror = function() { reject('img'); };
+      img.onload = function() {
+        var MAX = 600, w = img.width, h = img.height;
+        if (w > h && w > MAX) { h = Math.round(h*MAX/w); w = MAX; }
+        else if (h > MAX)     { w = Math.round(w*MAX/h); h = MAX; }
+        var c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(c.toDataURL('image/jpeg', 0.8));
+      };
+      img.src = ev.target.result;
+    };
+    rd.readAsDataURL(file);
+  });
+}
+
+// ── Collecte données ──
+function collectData(photo64) {
+  var dob = g('dob') || g('dob-text');
+  return {
+    
+    nom: g('nom'), prenom: g('prenom'),
+    genre: getPills('genre-pills','single'),
+    dob: dob, agetranche: g('age-tranche'), matrimoniale: g('matrimoniale'),
+    telephone: g('telephone'), tel2: g('tel2'), email: g('email'),
+    quartier: g('quartier'), arrondissement: g('arrondissement'),
+    vehicule: getPills('vehicule-pills','single'),
+    placesCovoiturage: document.getElementById('places-range').value,
+    village: g('village'), departement: g('departement'), ethnique: g('ethnique'),
+    langues: getPills('langue-pills','multi'),
+    niveauLangue: getPills('nlangue-pills','single'),
+    dureeYaounde: g('duree-yaounde'),
+    freqVillage: getPills('freq-pills','single'),
+    profession: g('profession'), secteur: g('secteur'),
+    statutPro: getPills('statut-pills','single'),
+    activiteSec: g('activite-sec'),
+    competences: getPills('comp-pills','multi'),
+    activites: getChks('activite-checks'),
+    dispo: getPills('dispo-pills','multi'),
+    rencontreFinMois: getPills('rencontre-pills','single'),
+    motivation: g('motivation'), source: g('source'),
+    animateur: getPills('anim-pills','single'),
+    photoBase64: photo64 || null,
+    photoFileName: photoFile ? photoFile.name : ''
+  };
+}
+
+// ── Récapitulatif ──
+function fillRecap(d) {
+  document.getElementById('r-nom').textContent = ((d.prenom||'') + ' ' + (d.nom||'')).trim() || '—';
+  document.getElementById('r-village').textContent = d.village || '—';
+  document.getElementById('r-quartier').textContent = d.quartier || '—';
+  document.getElementById('r-pro').textContent = d.profession || '—';
+  document.getElementById('r-rencontre').textContent = d.rencontreFinMois || '—';
+}
+
+// ── Afficher succès ──
+function showSuccess() {
+  document.getElementById('overlay').classList.remove('on');
+  for (var i = 1; i <= 5; i++) {
+    var s = document.getElementById('step-' + i);
+    if (s) s.style.display = 'none';
+  }
+  var c = document.querySelector('.container');
+  if (c) c.style.display = 'none';
+  document.querySelector('.prog-wrap').style.display = 'none';
+  document.getElementById('success').classList.add('on');
+  setTimeout(toTop, 50);
+}
+
+// ── Soumission ──
+function submit() {
+  if (!validate(5)) return;
+  var btn = document.getElementById('btn-send');
+  var errN = document.getElementById('err-submit');
+  errN.classList.remove('on');
+
+  if (APPS_SCRIPT_URL === 'VOTRE_URL_APPS_SCRIPT') {
+    fillRecap(collectData(null));
+    showSuccess();
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Envoi...';
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('overlay-msg').textContent = 'Envoi en cours...';
+
+  var p = photoFile
+    ? compressPhoto(photoFile).then(function(b64) {
+        var kb = Math.round(b64.length * 0.75 / 1024);
+        document.getElementById('overlay-msg').textContent = 'Photo ' + kb + ' Ko — envoi...';
+        return b64;
+      }).catch(function() { return null; })
+    : Promise.resolve(null);
+
+  p.then(function(b64) {
+    var data = collectData(b64);
+    fillRecap(data);
+    return fetch(APPS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(data)
+    });
+  }).then(function() {
+    showSuccess();
+  }).catch(function() {
+    document.getElementById('overlay').classList.remove('on');
+    btn.disabled = false;
+    btn.textContent = 'Envoyer ma fiche';
+    errN.classList.add('on');
+  });
+}
+</script>
+</body>
+</html>
